@@ -3,21 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Instant Study Flashcard Generator</title>
+  <title>Instant Study Flashcard Generator + Scanner</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
   <div id="app">
     <header>
       <h1>Flashcard Studio</h1>
-      <p>Convert your textbook notes into digital flashcards instantly.</p>
+      <p>Convert your textbook notes or snap a photo of a page to create flashcards.</p>
     </header>
 
     <main class="container">
       <div class="input-section">
-        <label for="note-input">Paste your notes (Format: <code>Term : Definition</code> on each line):</label>
+        <div class="section-actions">
+          <label for="note-input">Notes Input (Format: <code>Term : Definition</code> per line):</label>
+          <button id="btn-open-camera" class="secondary-btn">📷 Scan Textbook Page</button>
+        </div>
+
         <textarea id="note-input" rows="8" placeholder="Refraction : Bending of light passing through different mediums&#10;Photosynthesis : Process used by plants to convert light into chemical energy&#10;Newton's First Law : An object remains at rest unless acted upon by a net force"></textarea>
+        
+        <div id="ocr-status" class="ocr-status" style="display: none;">
+          <span id="ocr-msg">Scanning image...</span>
+        </div>
+
         <button id="btn-generate" class="primary-btn">Generate Flashcards</button>
+      </div>
+
+      <div id="camera-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <h3>Scan Textbook Page</h3>
+          <video id="webcam" autoplay playsinline></video>
+          <canvas id="capture-canvas" style="display: none;"></canvas>
+          <div class="modal-actions">
+            <button id="btn-capture" class="primary-btn">Snap Photo</button>
+            <button id="btn-close-camera" class="secondary-btn">Cancel</button>
+          </div>
+        </div>
       </div>
 
       <div id="deck-section" class="deck-section">
@@ -27,7 +49,7 @@
     </main>
 
     <footer>
-      <p>Free open-source study tool • Check out my other tools: <a href="#">Resume Builder</a> | <a href="#">Bill Calculator</a></p>
+      <p>Free open-source study tool • Check out my other tools: <a href="https://yourusername.github.io/resume-builder">Resume Builder</a> | <a href="#">Bill Calculator</a></p>
     </footer>
   </div>
 
